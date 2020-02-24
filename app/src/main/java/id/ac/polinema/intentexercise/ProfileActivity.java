@@ -2,7 +2,14 @@ package id.ac.polinema.intentexercise;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -10,6 +17,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView aboutMe;
     private TextView email;
     private TextView homepage;
+
+    private Button homePage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,20 +29,38 @@ public class ProfileActivity extends AppCompatActivity {
         email = findViewById(R.id.label_email);
         homepage = findViewById(R.id.label_homepage);
 
-        Bundle extras = getIntent().getExtras();
+        homePage = findViewById(R.id.button_homepage);
 
+        Bundle extras = getIntent().getExtras();
+        final String home = extras.getString(RegisterActivity.HOMEPAGE_KEY);
         if (extras!=null){
             String name = extras.getString(RegisterActivity.FULLNAME_KEY);
             String about = extras.getString(RegisterActivity.ABOUTYOU_KEY);
             String mail = extras.getString(RegisterActivity.EMAIL_KEY);
-            String homePage = extras.getString(RegisterActivity.HOMEPAGE_KEY);
+            byte[] byteArray = extras.getByteArray("picture");
+
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            ImageView image = findViewById(R.id.image_profile);
+            image.setImageBitmap(bmp);
 
             fullname.setText(name);
             aboutMe.setText(about);
             email.setText(mail);
-            homepage.setText(homePage);
+            homepage.setText(home);
         }
 
+
+        homePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri webpage = Uri.parse(home);
+                Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
+            }
+        });
 
 
     }
