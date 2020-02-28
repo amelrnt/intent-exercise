@@ -17,7 +17,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView aboutMe;
     private TextView email;
     private TextView homepage;
-
+    private ImageView pictProfile;
     private Button homePage;
 
     @Override
@@ -28,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
         aboutMe = findViewById(R.id.label_about);
         email = findViewById(R.id.label_email);
         homepage = findViewById(R.id.label_homepage);
-
+        pictProfile = findViewById(R.id.image_profile);
         homePage = findViewById(R.id.button_homepage);
 
         Bundle extras = getIntent().getExtras();
@@ -37,12 +37,8 @@ public class ProfileActivity extends AppCompatActivity {
             String name = extras.getString(RegisterActivity.FULLNAME_KEY);
             String about = extras.getString(RegisterActivity.ABOUTYOU_KEY);
             String mail = extras.getString(RegisterActivity.EMAIL_KEY);
-            byte[] byteArray = extras.getByteArray("picture");
-
-            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            ImageView image = findViewById(R.id.image_profile);
-            image.setImageBitmap(bmp);
-
+            Bitmap bitmap = (Bitmap) extras.get("picture");
+            pictProfile.setImageBitmap(bitmap);
             fullname.setText(name);
             aboutMe.setText(about);
             email.setText(mail);

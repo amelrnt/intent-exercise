@@ -46,11 +46,10 @@ public class RegisterActivity extends AppCompatActivity implements Validator.Val
     private EditText confirmPassword;
     protected Validator validator;
     private ImageView gb1;
-    private Button btnReg;
+
 
     public static final String FULLNAME_KEY = "username";
     public static final String EMAIL_KEY = "aaa@gmail.com";
-    public static final String PASSWORD_KEY = "1234";
     public static final String ABOUTYOU_KEY = "asdfghjkl";
     public static final String HOMEPAGE_KEY = "polinema.ac.id";
     private static final String TAG = RegisterActivity.class.getCanonicalName();
@@ -70,52 +69,30 @@ public class RegisterActivity extends AppCompatActivity implements Validator.Val
         confirmPassword = findViewById(R.id.text_confirm_password);
         aboutYou = findViewById(R.id.text_about);
         homepage = findViewById(R.id.text_homepage);
-        btnReg = findViewById(R.id.button_ok);
+
+
 
         validator.validate();
-        validator.setValidationMode(Validator.Mode.BURST);
         validator.setValidationListener(this);
     }
 
-//    public void handleSave(View view) {
-//        validator.setValidationMode(Validator.Mode.BURST);
-//
-//        Intent intent = new Intent(this, ProfileActivity.class);
-//
-//        String namaLengkap = fullname.getText().toString();
-//        String mail = email.getText().toString();
-//        intent.putExtra(FULLNAME_KEY,namaLengkap);
-//        intent.putExtra(EMAIL_KEY,mail);
-//        intent.putExtra(PASSWORD_KEY,password.getText().toString());
-//        intent.putExtra(PASSWORD_KEY,confirmPassword.getText().toString());
-//        intent.putExtra(ABOUTYOU_KEY,aboutYou.getText().toString());
-//        intent.putExtra(HOMEPAGE_KEY,homepage.getText().toString());
-//        startActivity(intent);
-//    }
+
 
     @Override
     public void onValidationSucceeded() {
-        btnReg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validator.setValidationMode(Validator.Mode.BURST);
-                Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
                 String namaLengkap = fullname.getText().toString();
                 String mail = email.getText().toString();
                 intent.putExtra(FULLNAME_KEY,namaLengkap);
-                intent.putExtra(EMAIL_KEY,mail);
-                intent.putExtra(PASSWORD_KEY,password.getText().toString());
-                intent.putExtra(PASSWORD_KEY,confirmPassword.getText().toString());
+                intent.putExtra(EMAIL_KEY,mail);;
                 intent.putExtra(ABOUTYOU_KEY,aboutYou.getText().toString());
                 intent.putExtra(HOMEPAGE_KEY,homepage.getText().toString());
-                Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.id.image_profile);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-                intent.putExtra("picture", byteArray);
+
+                gb1.setDrawingCacheEnabled(true);
+                Bitmap b=gb1.getDrawingCache();
+                intent.putExtra("picture", b);
                 startActivity(intent);
-            }
-        });
+
     }
 
     @Override
@@ -157,6 +134,10 @@ public class RegisterActivity extends AppCompatActivity implements Validator.Val
                 }
             }
         }
+    }
+
+    public void handleSave(View view) {
+        validator.validate();
     }
 }
 
